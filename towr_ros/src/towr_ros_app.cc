@@ -50,11 +50,19 @@ public:
 
     double z_ground = 0.0;
     formulation_.initial_ee_W_ =  nominal_stance_B;
+
+    formulation_.initial_base_.lin.at(kPos).z() = - nominal_stance_B.front().z() + z_ground;
+    formulation_.initial_base_.lin.at(kPos).z() = -formulation_.initial_base_.lin.at(kPos).z();
+    Eigen::Vector3d euler(formulation_.initial_base_.ang.at(kPos).x(), formulation_.initial_base_.ang.at(kPos).y(), formulation_.initial_base_.ang.at(kPos).z());
+    Eigen::Matrix3d w_R_b = EulerConverter::GetRotationMatrixBaseToWorld(euler);
+    for (int ee = 0; ee < nominal_stance_B.size(); ++ee){
+      formulation_.initial_ee_W_.at(ee) = formulation_.initial_base_.lin.p() + w_R_b * nominal_stance_B.at(ee);
+    }
+    
     std::for_each(formulation_.initial_ee_W_.begin(), formulation_.initial_ee_W_.end(),
                   [&](Vector3d& p){ p.z() = z_ground; } // feet at 0 height
     );
 
-    formulation_.initial_base_.lin.at(kPos).z() = - nominal_stance_B.front().z() + z_ground;
   }
 
   /**

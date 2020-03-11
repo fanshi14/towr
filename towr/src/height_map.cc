@@ -104,7 +104,7 @@ HeightMap::GetNormal(double x, double y, const DimDerivs& deriv) const
       n(dim) = -GetSecondDerivativeOfHeightWrt(dim, deriv.front(), x, y);
   }
 
-  n(Z) = basis_requested? 1.0 : 0.0;
+  n(Z) = basis_requested? -1.0 : 0.0;
 
   return n;
 }

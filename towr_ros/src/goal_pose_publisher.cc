@@ -55,7 +55,9 @@ void UserCommandCallback(const towr_ros::TowrCommand& msg_in)
   double y = msg_in.goal_lin.pos.y;
   goal_msg.pose.position.x = x;
   goal_msg.pose.position.y = y;
-  goal_msg.pose.position.z = terrain_->GetHeight(x, y);
+  // goal_msg.pose.position.z = terrain_->GetHeight(x, y);
+  goal_msg.pose.position.z = msg_in.goal_lin.pos.z;
+  
 
   // orientation according to message
   Eigen::Quaterniond q = xpp::GetQuaternionFromEulerZYX(msg_in.goal_ang.pos.z,

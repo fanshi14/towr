@@ -64,8 +64,12 @@ TowrUserInterface::TowrUserInterface ()
   user_command_pub_ = n.advertise<towr_ros::TowrCommand>(towr_msgs::user_command, 1);
 
   goal_geom_.lin.p_.setZero();
-  goal_geom_.lin.p_ << 2.1, 0.0, 0.0;
-  goal_geom_.ang.p_ << 0.0, 0.0, 0.0; // roll, pitch, yaw angle applied Z->Y'->X''
+  // test
+  // goal_geom_.lin.p_ << 2.1, 0.0, 0.0;
+  goal_geom_.lin.p_ << 0.5, 0.0, -0.58;
+  // goal_geom_.ang.p_ << 0.0, 0.0, 0.0; // roll, pitch, yaw angle applied Z->Y'->X''
+  goal_geom_.ang.p_ << 3.1415926, 0.0, 0.0; // roll, pitch, yaw angle applied Z->Y'->X''
+  
 
   robot_      = RobotModel::Monoped;
   terrain_    = HeightMap::FlatID;

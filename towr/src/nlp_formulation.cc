@@ -58,6 +58,10 @@ NlpFormulation::NlpFormulation ()
   cout << "           https://github.com/ethz-adrl/towr\n";
   cout << "************************************************************";
   cout << "\n\n";
+  // test
+  // initial_base_.lin.at(kPos).x() = 0.5;
+  initial_base_.ang.at(kPos).x() = 3.1415926;
+  
 }
 
 NlpFormulation::VariablePtrVec
@@ -103,7 +107,9 @@ NlpFormulation::MakeBaseVariables () const
 
   double x = final_base_.lin.p().x();
   double y = final_base_.lin.p().y();
-  double z = terrain_->GetHeight(x,y) - model_.kinematic_model_->GetNominalStanceInBase().front().z();
+  // double z = terrain_->GetHeight(x,y) - model_.kinematic_model_->GetNominalStanceInBase().front().z();
+  double z = final_base_.lin.p().z();
+  
   Vector3d final_pos(x, y, z);
 
   spline_lin->SetByLinearInterpolation(initial_base_.lin.p(), final_pos, params_.GetTotalTime());
@@ -140,7 +146,9 @@ NlpFormulation::MakeEndeffectorVariables () const
 
     // initialize towards final footholds
     double yaw = final_base_.ang.p().z();
-    Eigen::Vector3d euler(0.0, 0.0, yaw);
+    // Eigen::Vector3d euler(0.0, 0.0, yaw);
+    Eigen::Vector3d euler(final_base_.ang.p().x(), final_base_.ang.p().y(), yaw);
+    
     Eigen::Matrix3d w_R_b = EulerConverter::GetRotationMatrixBaseToWorld(euler);
     Vector3d final_ee_pos_W = final_base_.lin.p() + w_R_b*model_.kinematic_model_->GetNominalStanceInBase().at(ee);
     double x = final_ee_pos_W.x();
